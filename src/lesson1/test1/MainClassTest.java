@@ -10,4 +10,10 @@ public class MainClassTest {
         int expectedNumber = 14;
         Assert.assertEquals("Number is not 14", expectedNumber, MainClass.getLocalNumber());
     }
+
+    @Test
+    public void testGetClassNumber() {
+        int highNumber = 45;
+        Assert.assertTrue("Number is less than 45", highNumber < MainClass.getClassNumber());
+    }
 }
