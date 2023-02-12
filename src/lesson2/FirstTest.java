@@ -76,6 +76,13 @@ public class FirstTest {
         Assert.assertEquals("Title is unexpected", "Java (programming language)", articleTitle);
     }
 
+    @Test
+    public void testSearchFieldText() {
+        waitForElementAndClick(By.xpath(skipButtonXPath), "Cannot find Skip button", 5);
+        assertElementHasText(By.xpath(searchFieldXPath), "Search Wikipedia",
+                "Search input text is incorrect");
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutSeconds);
         wait.withMessage(errorMessage + "\n");
@@ -108,5 +115,10 @@ public class FirstTest {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutSeconds);
         element.clear();
         return element;
+    }
+
+    private void assertElementHasText(By by, String expectedText, String errorMessage) {
+        Assert.assertEquals(errorMessage, expectedText,
+                waitForElementPresent(by, "Cannot found element by [" + by + "]").getAttribute("text"));
     }
 }
