@@ -20,6 +20,7 @@ public class FirstTest {
     private String searchFieldXPath = "//*[contains(@text,'Search Wikipedia')]";
     private String skipButtonXPath = "//*[contains(@text,'SKIP')]";
     private String javaFoundElementXPath = "//*[contains(@text,'Object-oriented programming language')]";
+    private String crossId = "org.wikipedia:id/search_close_btn";
 
     @Before
     public void setUp() throws Exception {
@@ -53,7 +54,6 @@ public class FirstTest {
 
     @Test
     public void testCancelSearch() {
-        String crossId = "org.wikipedia:id/search_close_btn";
         waitForElementAndClick(By.xpath(skipButtonXPath), "Cannot find Skip button", 5);
         waitForElementAndClick(By.id("org.wikipedia:id/search_container"),
                 "Cannot find 'Search Wikipedia' input on Menu page", 5);
@@ -89,6 +89,19 @@ public class FirstTest {
         waitForElementAndClick(By.xpath(searchFieldXPath), "Cannot find 'Search Wikipedia' input on Menu page", 5);
         assertElementHasText(By.xpath(searchFieldXPath), "Search Wikipedia",
                 "Search input text is incorrect");
+    }
+
+    @Test
+    public void testSearchAndCancel() {
+        String resultsId = "org.wikipedia:id/search_results_display";
+        waitForElementAndClick(By.xpath(skipButtonXPath), "Cannot find Skip button", 5);
+        waitForElementAndClick(By.xpath(searchFieldXPath), "Cannot find 'Search Wikipedia' input on Menu page", 5);
+        waitForElementAndSendKeys(By.xpath(searchFieldXPath), "Java", "Cannot find search input", 5);
+        waitForElementPresent(By.id(resultsId), "Cannot find search results", 15);
+        waitForElementAndClick(By.id(crossId),"Cannot find 'X' to cancel search", 5);
+        boolean isResultsDisplayed = waitForElementNotPresent(By.id(resultsId),
+                "Search results are still displayed", 15);
+        Assert.assertTrue("Search results are still displayed", isResultsDisplayed);
     }
 
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutSeconds) {
