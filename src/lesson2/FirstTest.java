@@ -77,8 +77,16 @@ public class FirstTest {
     }
 
     @Test
-    public void testSearchFieldText() {
+    public void testSearchFieldTextOnMainPage() {
         waitForElementAndClick(By.xpath(skipButtonXPath), "Cannot find Skip button", 5);
+        assertElementHasText(By.xpath(searchFieldXPath), "Search Wikipedia",
+                "Search input text is incorrect");
+    }
+
+    @Test
+    public void testSearchFieldTextOnSearchPage() {
+        waitForElementAndClick(By.xpath(skipButtonXPath), "Cannot find Skip button", 5);
+        waitForElementAndClick(By.xpath(searchFieldXPath), "Cannot find 'Search Wikipedia' input on Menu page", 5);
         assertElementHasText(By.xpath(searchFieldXPath), "Search Wikipedia",
                 "Search input text is incorrect");
     }
