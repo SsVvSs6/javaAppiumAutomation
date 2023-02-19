@@ -43,6 +43,7 @@ public class FirstTest {
 
     @After
     public void tearDown() {
+        driver.rotate(ScreenOrientation.PORTRAIT);
         driver.quit();
     }
 
@@ -75,7 +76,7 @@ public class FirstTest {
         waitForElementAndClick(By.xpath(javaFoundElementXPath),
                 "Cannot find 'Object-oriented programming language' topic searching by Java",
                 15);
-        String articleTitle = waitForElementPresent(By.xpath("org.wikipedia:id/view_page_title_text"), "Cannot find article title",
+        String articleTitle = waitForElementPresent(By.xpath("//android.view.View[@instance=2]"), "Cannot find article title",
                 15).getAttribute("text");
         Assert.assertEquals("Title is unexpected", "Java (programming language)", articleTitle);
     }
