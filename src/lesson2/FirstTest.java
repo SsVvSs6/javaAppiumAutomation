@@ -15,7 +15,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import javax.swing.text.Style;
 import java.net.URL;
 import java.util.List;
 
@@ -228,6 +227,40 @@ public class FirstTest {
                 "Cannot find article after running from background", 15);
     }
 
+    @Test
+    public void testSaveTwoArticlesAndDeleteOne() {
+        String listName = "Learning programming";
+        String javaSecondFoundElementXPath = "//*[contains(@text,'Island in Indonesia')]";
+        waitForElementAndClick(By.xpath(skipButtonXPath), "Cannot find Skip button", 5);
+        waitForElementAndClick(By.xpath(searchFieldXPath), "Cannot find 'Search Wikipedia' input on Menu page", 5);
+        waitForElementAndSendKeys(By.xpath(searchFieldXPath), "Java", "Cannot find search input", 5);
+        waitForElementAndClick(By.xpath(javaFoundElementXPath),
+                "Cannot find 'Object-oriented programming language' topic searching by Java",
+                15);
+        saveArticleToTheNewListIfNoListsExists(listName);
+        waitForElementAndClick(By.xpath("//*[@content-desc='Navigate up']"),
+                "Cannot find 'X' link", 5);
+        waitForElementAndClick(By.xpath(javaSecondFoundElementXPath),
+                "Cannot find 'Island in Indonesia' topic searching by Java",
+                15);
+        saveArticleToExistList(By.xpath("//*[@text='" + listName + "']"));
+        waitForElementAndClick(By.xpath("//*[@content-desc='Navigate up']"),
+                "Cannot find 'X' link", 5);
+        waitForElementAndClick(By.xpath("//*[@class='android.widget.ImageButton']"),
+                "Cannot find 'X' link", 5);
+        waitForElementAndClick(By.id("org.wikipedia:id/nav_tab_reading_lists"),
+                "Cannot find navigation button to My lists", 5);
+        waitForElementAndClick(By.xpath("//*[contains(@text,'" + listName + "')]"),
+                "Cannot find saved list", 5);
+        swipeElementToLeft(By.xpath(javaFoundElementXPath), "Cannot find saved article");
+        waitForElementNotPresent(By.xpath(javaFoundElementXPath), "Cannot delete saved article", 5);
+        waitForElementAndClick(By.xpath(javaSecondFoundElementXPath),
+                "Cannot find 'Island in Indonesia' in the list of saved", 15);
+        String titleOfArticle = waitForElementAndGetAttribute(By.xpath("//android.view.View[@instance=2]"), "text",
+                "Cannot find title of article", 15);
+        Assert.assertEquals("Article title is not correct", "Java", titleOfArticle);
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutSeconds);
         wait.withMessage(errorMessage + "\n");
@@ -323,5 +356,26 @@ public class FirstTest {
     private String waitForElementAndGetAttribute(By by, String attribute, String errorMessage, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         return element.getAttribute(attribute);
+    }
+
+    private void startSavingArticleToList() {
+        waitForElementAndClick(By.xpath("//*[@content-desc='Save']"),
+                "Cannot find option to add article to reading list", 5);
+        waitForElementAndClick(By.id("org.wikipedia:id/snackbar_action"),
+                "Cannot find 'Add to list' tip overlay", 5);
+    }
+
+    private void saveArticleToTheNewListIfNoListsExists(String listName) {
+        startSavingArticleToList();
+        waitForElementAndClear(By.id("org.wikipedia:id/text_input"),
+                "Cannot find input to set name of list", 5);
+        waitForElementAndSendKeys(By.id("org.wikipedia:id/text_input"), listName,
+                "Cannot put text to list field name", 5);
+        waitForElementAndClick(By.id("android:id/button1"), "Cannot find 'OK' button", 5);
+    }
+
+    private void saveArticleToExistList(By by) {
+        startSavingArticleToList();
+        waitForElementAndClick(by, "Cannot find created list", 15);
     }
 }
