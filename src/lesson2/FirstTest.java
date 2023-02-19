@@ -261,6 +261,18 @@ public class FirstTest {
         Assert.assertEquals("Article title is not correct", "Java", titleOfArticle);
     }
 
+    @Test
+    public void testTitleIsDisplayed() {
+        waitForElementAndClick(By.xpath(skipButtonXPath), "Cannot find Skip button", 5);
+        waitForElementAndClick(By.xpath(searchFieldXPath), "Cannot find 'Search Wikipedia' input on Menu page", 5);
+        waitForElementAndSendKeys(By.xpath(searchFieldXPath), "Java", "Cannot find search input", 5);
+        waitForElementAndClick(By.xpath(javaFoundElementXPath),
+                "Cannot find 'Object-oriented programming language' topic searching by Java",
+                15);
+        assertElementPresent(By.xpath("//android.view.View[@instance=2]"),
+                "Title is not found");
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutSeconds);
         wait.withMessage(errorMessage + "\n");
@@ -377,5 +389,13 @@ public class FirstTest {
     private void saveArticleToExistList(By by) {
         startSavingArticleToList();
         waitForElementAndClick(by, "Cannot find created list", 15);
+    }
+
+    private void assertElementPresent(By by, String errorMessage) {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements == 0) {
+            String defaultMessage = "An element '" + by.toString() + "' supposed to be present";
+            throw  new AssertionError(defaultMessage + ". " + errorMessage);
+        }
     }
 }
