@@ -2,6 +2,9 @@ package lib.iu;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class SearchPageObject extends MainPageObject {
 
@@ -11,6 +14,8 @@ public class SearchPageObject extends MainPageObject {
     private static final String SEARCH_CANCEL_BUTTON_ID = "org.wikipedia:id/search_close_btn";
     private static final String SEARCH_RESULT_XPATH = "//*[@resource-id='org.wikipedia:id/page_list_item_title']";
     private static final String EMPTY_RESULT_LABEL_XPATH = "//*[@text='No results']";
+    private static final String RESULT_ID = "org.wikipedia:id/search_results_display";
+    private static final String RESULTS_TITLE_ID = "org.wikipedia:id/page_list_item_title";
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
@@ -72,5 +77,28 @@ public class SearchPageObject extends MainPageObject {
     public void assertThereIsNoResultsOfSearch() {
         this.assertElementNotPresent(By.xpath(SEARCH_RESULT_XPATH),
                 "We've found some elements by request ");
+    }
+
+    public void waitForSearchResultsPresent() {
+        this.waitForElementPresent(By.id(RESULTS_TITLE_ID),
+                "Cannot find search results", 15);
+    }
+
+    public boolean waitForSearchResultsNotPresent() {
+        return this.waitForElementNotPresent(By.id(RESULT_ID),
+                "Cannot find search results", 15);
+    }
+
+    public void checkSearchFieldText(String text) {
+        this.assertElementHasText(By.xpath(SEARCH_INIT_ELEMENT_XPATH), text,
+                "Search input text is incorrect");
+    }
+
+    public List<WebElement> getResultsList() {
+        return driver.findElements(By.id(RESULTS_TITLE_ID));
+    }
+
+    public boolean checkSearchResultElementContainsText(List<WebElement> resultsList, String searchText, int i) {
+        return this.checkElementContainsText(resultsList.get(i).getAttribute("text"), searchText);
     }
 }

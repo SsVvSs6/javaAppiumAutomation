@@ -123,20 +123,6 @@ public class MainPageObject {
                 "Cannot find 'Add to list' tip overlay", 5);
     }
 
-    public void saveArticleToTheNewListIfNoListsExists(String listName) {
-        startSavingArticleToList();
-        waitForElementAndClear(By.id("org.wikipedia:id/text_input"),
-                "Cannot find input to set name of list", 5);
-        waitForElementAndSendKeys(By.id("org.wikipedia:id/text_input"), listName,
-                "Cannot put text to list field name", 5);
-        waitForElementAndClick(By.id("android:id/button1"), "Cannot find 'OK' button", 5);
-    }
-
-    public void saveArticleToExistList(By by) {
-        startSavingArticleToList();
-        waitForElementAndClick(by, "Cannot find created list", 15);
-    }
-
     public void assertElementPresent(By by, String errorMessage) {
         int amountOfElements = getAmountOfElements(by);
         if (amountOfElements == 0) {

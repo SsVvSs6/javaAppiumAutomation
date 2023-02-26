@@ -37,4 +37,27 @@ public class MyListsTests extends CoreTestCase {
         myListsPageObject.openFolderByName(listName);
         myListsPageObject.swipeByArticleToDelete(javaArticleDescriptionText);
     }
+
+    @Test
+    public void testSaveTwoArticlesAndDeleteOne() {
+        String listName = "Learning programming";
+        String javaSecondFoundElementText = "Island in Indonesia";
+        searchPageObject.clickSkipButton();
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine(javaSearchText);
+        searchPageObject.clickByArticleWithSubstring(javaArticleDescriptionText);
+        articlePageObject.waitForTitleElement();
+        articlePageObject.addFirstArticleToMyFirstList(listName);
+        articlePageObject.closeArticle();
+        searchPageObject.clickByArticleWithSubstring(javaSecondFoundElementText);
+        articlePageObject.addArticleToExistMyList(listName);
+        articlePageObject.closeArticle();
+        navigationUI.clickBackIcon();
+        navigationUI.clickMyLists();
+        myListsPageObject.openFolderByName(listName);
+        myListsPageObject.swipeByArticleToDelete(javaArticleDescriptionText);
+        myListsPageObject.openSavedArticle(javaSecondFoundElementText);
+        String titleOfArticle = articlePageObject.getArticleTitle();
+        assertEquals("Article title is not correct", javaSearchText, titleOfArticle);
+    }
 }

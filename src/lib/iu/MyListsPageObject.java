@@ -33,4 +33,9 @@ public class MyListsPageObject extends MainPageObject {
         this.waitForElementNotPresent(By.xpath(String.format(ARTICLE_TITLE_TPL_XPATH, articleTitle)),
                 "Cannot delete saved article " + articleTitle, 15);
     }
+
+    public void openSavedArticle(String articleTitle) {
+        this.waitForElementAndClick(By.xpath(String.format(ARTICLE_TITLE_TPL_XPATH, articleTitle)),
+                "Cannot find '" + articleTitle + "' in the list of saved", 15);
+    }
 }

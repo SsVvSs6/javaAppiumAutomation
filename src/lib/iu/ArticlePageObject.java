@@ -13,6 +13,7 @@ public class ArticlePageObject extends MainPageObject {
     private static final String FOLDER_NAME_INPUT_ID = "org.wikipedia:id/text_input";
     private static final String OK_BUTTON_XPATH = "android:id/button1";
     private static final String CLOSE_BUTTON_XPATH = "//*[@content-desc='Navigate up']";
+    private static final String MY_LIST_XPATH = "//*[contains(@text,'%s')]";
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
@@ -32,7 +33,6 @@ public class ArticlePageObject extends MainPageObject {
                 "Cannot find the end of the article", 20);
     }
 
-    //аналог saveArticleToTheNewListIfNoListsExists
     public void addFirstArticleToMyFirstList(String listName) {
         this.startSavingArticleToList();
         this.waitForElementAndClear(By.id(FOLDER_NAME_INPUT_ID),
@@ -40,6 +40,12 @@ public class ArticlePageObject extends MainPageObject {
         this.waitForElementAndSendKeys(By.id(FOLDER_NAME_INPUT_ID), listName,
                 "Cannot put text to list field name", 5);
         this.waitForElementAndClick(By.id(OK_BUTTON_XPATH), "Cannot find 'OK' button", 5);
+    }
+
+    public void addArticleToExistMyList(String listName) {
+        this.startSavingArticleToList();
+        waitForElementAndClick(By.xpath(String.format(MY_LIST_XPATH, listName)),
+                "Cannot find created list " + listName, 15);
     }
 
     public void startSavingArticleToList() {
@@ -51,5 +57,9 @@ public class ArticlePageObject extends MainPageObject {
 
     public void closeArticle() {
         this.waitForElementAndClick(By.xpath(CLOSE_BUTTON_XPATH), "Cannot find 'X' link", 5);
+    }
+
+    public void waitForTitleElementWithAssert() {
+        this.assertElementPresent(By.xpath(ARTICLE_TITLE_XPATH), "Title is not found");
     }
 }

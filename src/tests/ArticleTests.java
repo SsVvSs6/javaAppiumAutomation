@@ -39,4 +39,13 @@ public class ArticleTests extends CoreTestCase {
         articlePageObject.waitForTitleElement();
         articlePageObject.swipeToFooter();
     }
+
+    @Test
+    public void testTitleIsDisplayed() {
+        searchPageObject.clickSkipButton();
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine(appiumSearchText);
+        searchPageObject.clickByArticleWithSubstring(appiumArticleDescriptionText);
+        articlePageObject.waitForTitleElementWithAssert();
+    }
 }
