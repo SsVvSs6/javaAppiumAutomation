@@ -1,4 +1,4 @@
-package lesson1.test1;
+package homeWorkResults.lesson1.test1;
 
 public class MainClass {
 
