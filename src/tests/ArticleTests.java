@@ -2,6 +2,8 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.iu.*;
+import lib.iu.factories.ArticlePageObjectFactory;
+import lib.iu.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class ArticleTests extends CoreTestCase {
@@ -16,8 +18,8 @@ public class ArticleTests extends CoreTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        searchPageObject = new SearchPageObject(driver);
-        articlePageObject = new ArticlePageObject(driver);
+        searchPageObject = SearchPageObjectFactory.get(driver);
+        articlePageObject = ArticlePageObjectFactory.get(driver);
     }
 
     @Test
@@ -34,8 +36,8 @@ public class ArticleTests extends CoreTestCase {
     public void testSwipeArticle() {
         searchPageObject.clickSkipButton();
         searchPageObject.initSearchInput();
-        searchPageObject.typeSearchLine(appiumSearchText);
-        searchPageObject.clickByArticleWithSubstring(appiumArticleDescriptionText);
+        searchPageObject.typeSearchLine(javaSearchText);
+        searchPageObject.clickByArticleWithSubstring(javaArticleDescriptionText);
         articlePageObject.waitForTitleElement();
         articlePageObject.swipeToFooter();
     }

@@ -2,10 +2,10 @@ package lib.iu;
 
 import io.appium.java_client.AppiumDriver;
 
-public class NavigationUI extends MainPageObject {
+abstract public class NavigationUI extends MainPageObject {
 
-    private static final String BACK_BUTTON_XPATH = "xpath://*[@class='android.widget.ImageButton']";
-    private static final String MY_LISTS_BUTTON_ID = "id:org.wikipedia:id/nav_tab_reading_lists";
+    protected static  String BACK_BUTTON_XPATH;
+    protected static String MY_LISTS_BUTTON_ID;
 
     public NavigationUI(AppiumDriver driver) {
         super(driver);

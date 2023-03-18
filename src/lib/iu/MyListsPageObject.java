@@ -1,11 +1,12 @@
 package lib.iu;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListsPageObject extends MainPageObject {
+abstract public class MyListsPageObject extends MainPageObject {
 
-    private static final String FOLDER_NAME_TPL_XPATH = "xpath://*[contains(@text,'%s')]";
-    private static final String ARTICLE_TITLE_TPL_XPATH = "xpath://*[contains(@text,'%s')]";
+    protected static String FOLDER_NAME_TPL_XPATH = "xpath://*[contains(@text,'%s')]";
+    protected static String ARTICLE_TITLE_TPL_XPATH = "xpath://*[contains(@text,'%s')]";
 
     public MyListsPageObject(AppiumDriver driver) {
         super(driver);
@@ -20,6 +21,9 @@ public class MyListsPageObject extends MainPageObject {
         this.waitForArticleToAppearByTitle(articleTitle);
         this.swipeElementToLeft(String.format(ARTICLE_TITLE_TPL_XPATH, articleTitle),
                 "Cannot find saved article");
+        if (Platform.getInstance().isIOS()) {
+            this.clickElementToTheRightCorner(ARTICLE_TITLE_TPL_XPATH, "Cannot find saved article");
+        }
         this.waitForArticleToDisappearByTitle(articleTitle);
     }
 

@@ -3,6 +3,8 @@ package tests;
 import lib.CoreTestCase;
 import lib.iu.ArticlePageObject;
 import lib.iu.SearchPageObject;
+import lib.iu.factories.ArticlePageObjectFactory;
+import lib.iu.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class ChangeAppConditionTests extends CoreTestCase {
@@ -15,8 +17,8 @@ public class ChangeAppConditionTests extends CoreTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        searchPageObject = new SearchPageObject(driver);
-        articlePageObject = new ArticlePageObject(driver);
+        searchPageObject = SearchPageObjectFactory.get(driver);
+        articlePageObject = ArticlePageObjectFactory.get(driver);
     }
 
     @Test

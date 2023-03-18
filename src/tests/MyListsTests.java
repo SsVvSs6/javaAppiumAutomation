@@ -1,7 +1,12 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.iu.*;
+import lib.iu.factories.ArticlePageObjectFactory;
+import lib.iu.factories.MyListsPageObjectFactory;
+import lib.iu.factories.NavigationUIFactory;
+import lib.iu.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
@@ -12,35 +17,44 @@ public class MyListsTests extends CoreTestCase {
     private MyListsPageObject myListsPageObject;
     private String javaSearchText = "Java";
     private String javaArticleDescriptionText = "Object-oriented programming language";
+    private String listName = "Learning programming";
 
     protected void setUp() throws Exception {
         super.setUp();
 
-        searchPageObject = new SearchPageObject(driver);
-        articlePageObject = new ArticlePageObject(driver);
-        navigationUI = new NavigationUI(driver);
-        myListsPageObject = new MyListsPageObject(driver);
+        searchPageObject = SearchPageObjectFactory.get(driver);
+        articlePageObject = ArticlePageObjectFactory.get(driver);
+        navigationUI = NavigationUIFactory.get(driver);
+        myListsPageObject = MyListsPageObjectFactory.get(driver);
     }
 
     @Test
     public void testSaveFirstArticleToMyList() {
-        String listName = "Learning programming";
         searchPageObject.clickSkipButton();
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(javaSearchText);
         searchPageObject.clickByArticleWithSubstring(javaArticleDescriptionText);
-        articlePageObject.waitForTitleElement();
-        articlePageObject.addFirstArticleToMyFirstList(listName);
+        //articlePageObject.waitForTitleElement();
+
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.addFirstArticleToMyFirstList(listName);
+        } else {
+            articlePageObject.addArticleToSavedList();
+        }
+
         articlePageObject.closeArticle();
         navigationUI.clickBackIcon();
         navigationUI.clickMyLists();
-        myListsPageObject.openFolderByName(listName);
+
+        if (Platform.getInstance().isAndroid()) {
+            myListsPageObject.openFolderByName(listName);
+        }
+
         myListsPageObject.swipeByArticleToDelete(javaArticleDescriptionText);
     }
 
     @Test
     public void testSaveTwoArticlesAndDeleteOne() {
-        String listName = "Learning programming";
         String javaSecondFoundElementText = "Island in Indonesia";
         searchPageObject.clickSkipButton();
         searchPageObject.initSearchInput();

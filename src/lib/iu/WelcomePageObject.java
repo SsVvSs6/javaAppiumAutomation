@@ -10,6 +10,7 @@ public class WelcomePageObject extends MainPageObject {
     private static final String STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK_ID = "id:Learn more about data collected";
     private static final String NEXT_LINK_ID = "id:Next";
     private static final String GET_STARTED_LINK_ID = "id:Get started";
+    private static final String SKIP_BUTTON_XPATH = "id:Skip";
 
     public WelcomePageObject(AppiumDriver driver) {
         super(driver);
@@ -32,7 +33,8 @@ public class WelcomePageObject extends MainPageObject {
 
     public void waitForLearnMoreAboutDataCollectedText() {
         this.waitForElementPresent(STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK_ID,
-                "Cannot find '" + STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK_ID + "' link", 10);
+                "Cannot find '" + STEP_LEARN_MORE_ABOUT_DATA_COLLECTED_LINK_ID + "' link",
+                10);
     }
 
     public void clickNextButton() {
@@ -43,5 +45,10 @@ public class WelcomePageObject extends MainPageObject {
     public void clickGetStartedButton() {
         this.waitForElementAndClick(GET_STARTED_LINK_ID,
                 "Cannot find and click '" + GET_STARTED_LINK_ID + "' button", 10);
+    }
+
+    public void clickSkip() {
+        this.waitForElementAndClick(SKIP_BUTTON_XPATH, "Cannot find and click skip button",
+                5);
     }
 }

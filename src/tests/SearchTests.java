@@ -2,6 +2,7 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.iu.SearchPageObject;
+import lib.iu.factories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
@@ -17,7 +18,7 @@ public class SearchTests extends CoreTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        searchPageObject = new SearchPageObject(driver);
+        searchPageObject = SearchPageObjectFactory.get(driver);
     }
 
     @Test

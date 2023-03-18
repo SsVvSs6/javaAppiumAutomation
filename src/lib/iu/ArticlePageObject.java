@@ -1,18 +1,19 @@
 package lib.iu;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.WebElement;
 
-public class ArticlePageObject extends MainPageObject {
+abstract public class ArticlePageObject extends MainPageObject {
 
-    private static final String ARTICLE_TITLE_XPATH = "xpath://android.view.View[@instance=2]";
-    private static final String FOOTER_ELEMENT_XPATH = "xpath://*[contains(@text,'View article in browser')]";
-    private static final String SAVE_BUTTON_XPATH = "xpath://*[@content-desc='Save']";
-    private static final String ADD_TO_LIST_BUTTON_ID = "id:org.wikipedia:id/snackbar_action";
-    private static final String FOLDER_NAME_INPUT_ID = "id:org.wikipedia:id/text_input";
-    private static final String OK_BUTTON_XPATH = "xpath:android:id/button1";
-    private static final String CLOSE_BUTTON_XPATH = "xpath://*[@content-desc='Navigate up']";
-    private static final String MY_LIST_XPATH = "xpath://*[contains(@text,'%s')]";
+    protected static String ARTICLE_TITLE_XPATH;
+    protected static String FOOTER_ELEMENT_XPATH;
+    protected static String SAVE_BUTTON_XPATH;
+    protected static String ADD_TO_LIST_BUTTON_ID;
+    protected static String FOLDER_NAME_INPUT_ID;
+    protected static String OK_BUTTON_XPATH;
+    protected static String CLOSE_BUTTON_XPATH ;
+    protected static String MY_LIST_XPATH;
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
@@ -24,12 +25,21 @@ public class ArticlePageObject extends MainPageObject {
     }
 
     public String getArticleTitle() {
-        return waitForTitleElement().getAttribute("text");
+        if (Platform.getInstance().isAndroid()) {
+            return waitForTitleElement().getAttribute("text");
+        } else {
+            return waitForTitleElement().getAttribute("name");
+        }
     }
 
     public void swipeToFooter() {
-        this.swipeUpToFindElement(FOOTER_ELEMENT_XPATH,
-                "Cannot find the end of the article", 20);
+        if(Platform.getInstance().isAndroid()) {
+            this.swipeUpToFindElement(FOOTER_ELEMENT_XPATH,
+                    "Cannot find the end of the article", 40);
+        } else {
+            this.swipeUpTillElementAppear(FOOTER_ELEMENT_XPATH,
+                    "Cannot find the end of the article", 40);
+        }
     }
 
     public void addFirstArticleToMyFirstList(String listName) {
@@ -52,6 +62,11 @@ public class ArticlePageObject extends MainPageObject {
                 "Cannot find option to add article to reading list", 5);
         waitForElementAndClick(ADD_TO_LIST_BUTTON_ID,
                 "Cannot find 'Add to list' tip overlay", 5);
+    }
+
+    public void addArticleToSavedList() {
+        this.waitForElementAndClick(ADD_TO_LIST_BUTTON_ID,
+                "Cannot find option to add article to reding list", 5);
     }
 
     public void closeArticle() {

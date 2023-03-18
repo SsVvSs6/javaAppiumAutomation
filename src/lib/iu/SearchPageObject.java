@@ -5,16 +5,17 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class SearchPageObject extends MainPageObject {
+abstract public class SearchPageObject extends MainPageObject {
 
-    private static final String SKIP_BUTTON_XPATH = "xpath://*[contains(@text,'SKIP')]";
-    private static final String SEARCH_INIT_ELEMENT_XPATH = "xpath://*[contains(@text,'Search Wikipedia')]";
-    private static final String SEARCH_RESULT_BY_SUBSTRING_TPL_XPATH = "xpath://*[contains(@text,'%s')]";
-    private static final String SEARCH_CANCEL_BUTTON_ID = "id:org.wikipedia:id/search_close_btn";
-    private static final String SEARCH_RESULT_XPATH = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title']";
-    private static final String EMPTY_RESULT_LABEL_XPATH = "xpath://*[@text='No results']";
-    private static final String RESULT_ID = "id:org.wikipedia:id/search_results_display";
-    private static final String RESULTS_TITLE_ID = "id:org.wikipedia:id/page_list_item_title";
+    protected static String SKIP_BUTTON_XPATH;
+    protected static String SEARCH_INIT_ELEMENT_XPATH;
+    protected static String SEARCH_INPUT_XPATH;
+    protected static String SEARCH_RESULT_BY_SUBSTRING_TPL_XPATH;
+    protected static String SEARCH_CANCEL_BUTTON_ID;
+    protected static String SEARCH_RESULT_XPATH;
+    protected static String EMPTY_RESULT_LABEL_XPATH;
+    protected static String RESULT_ID;
+    protected static String RESULTS_TITLE_ID;
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
